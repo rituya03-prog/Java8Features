@@ -1,8 +1,6 @@
 package ritu.Java8;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -23,16 +21,35 @@ public class StreamFrequency {
                 .forEach((k, v) -> System.out.println(k + ": " + v));
 
      //most frequent element in an array
-        int[] input = {35,23,44,2,2,41,35,35,16,44};
-        Map<Integer,Long> output =Arrays.stream(input).boxed().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-            //    .entrySet().stream().sorted(Map.Entry.<Integer,Long>comparingByValue().reversed()).skip(1).findFirst().get().getKey();
+        int[] input = {35,23,44,2,41,35,35,2,16,44};
+        List<Integer> output =Arrays.stream(input).boxed().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .entrySet().stream().sorted(Map.Entry.<Integer, Long>comparingByValue().reversed())
+                .limit(2)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+              //  .entrySet().stream().sorted(Map.Entry.<Integer,Long>comparingByValue().reversed()).skip(1).findFirst().get().getKey();
+        System.out.println("top 2Most frequent element in the array: " + output);
 
         // Scientific games interview question: Sort the array based on frequency of elements in descending order
-        List<Integer> arrList = Arrays.stream(input).boxed()
-                .sorted((a,b) -> Long.compare(output.get(b), output.get(a))).collect(Collectors.toList());
-        System.out.println(arrList);
+
+        Map<Integer, Long> output2 =Arrays.stream(input).boxed().collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting()));
+        List<Integer> arrList = output2.entrySet()
+                .stream()
+                .sorted(Map.Entry.<Integer, Long>comparingByValue().reversed())
+                .flatMap(entry ->
+                        Collections.nCopies(
+                                entry.getValue().intValue(),
+                                entry.getKey()
+                        ).stream()
+                )
+                .collect(Collectors.toList());
+        System.out.println("maintain the order"+ arrList);
 
                 //max(Map.Entry.comparingByValue()).get().getKey();
-        System.out.println("Most frequent element in the array: " + output);
+       // System.out.println("Most frequent element in the array: " + output);
+
+
+
+
     }
 }

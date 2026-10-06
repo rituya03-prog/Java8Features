@@ -30,4 +30,6 @@ public class IndivisualDigitSum {
 //uisng stream
 
 
+
+
 }
