@@ -180,4 +180,11 @@ class EmployeeAge {
 
         System.out.println("Max skill by department: " + maxSkillByDepartment);
 
+
+        // //Convert List<Employee> to Map<dept, Map<name, salary>>.
+
+        Map<String,Map<Double, String>> result = emp.stream()
+                .collect(Collectors.groupingBy(Employee::getDepartment,Collectors.toMap(Employee::getSalary, Employee::getName)));
+        System.out.println(result
+        );
 }}
